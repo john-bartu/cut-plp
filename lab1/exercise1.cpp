@@ -4,16 +4,14 @@
 void swap(int *a, int *b)
 {
     int temp = *b;
-
     *b = *a;
-
     *a = temp;
 }
 
 int main(int argc, char *argv[])
 {
     int count = argc - 1;
-    int numbers[count]; 
+    int numbers[count]; //Sometimes Compiler will have error
 
     for (int i = 1; i < argc; i++)
     {

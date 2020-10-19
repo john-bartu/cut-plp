@@ -1,9 +1,4 @@
-#include <iostream>
 #include <stdio.h>
-#include <stdlib.h>
-#include <iomanip>
-
-using namespace std;
 
 int check_divisions(int a)
 {
