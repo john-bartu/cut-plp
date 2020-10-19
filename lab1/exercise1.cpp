@@ -1,3 +1,5 @@
+/// Tittle: Exercise1
+/// Description: Sort argument values
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -21,13 +23,13 @@ int main(int argc, char *argv[])
     for (int i = 0; i < count; i++)
     {
 
-        for (int i = 0; i < count - 1; i++)
+        for (int j = 0; j < count - 1 - i; j++)
         {
 
-            if (numbers[i] > numbers[i + 1])
+            if (numbers[j] > numbers[j + 1])
             {
 
-                swap(&numbers[i], &numbers[i + 1]);
+                swap(&numbers[j], &numbers[j + 1]);
             }
         }
     }

@@ -1,12 +1,7 @@
+/// Tittle: Exercise3
+/// Description: Calc BMI
 #include <stdio.h>
 #include <stdlib.h>
-
-void swap(int *a, int *b)
-{
-    int temp = *b;
-    *b = *a;
-    *a = temp;
-}
 
 int main(int argc, char *argv[])
 {

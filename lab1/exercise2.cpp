@@ -1,3 +1,5 @@
+/// Tittle: Exercise2
+/// Description: Check if program arguments are palindrom
 #include <stdio.h>
 #include <cstring>
 

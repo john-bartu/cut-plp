@@ -1,3 +1,6 @@
+/// Tittle: Exercise5
+/// Description: Adding matrixes
+
 #include <stdio.h>
 #include <stdlib.h>
 
