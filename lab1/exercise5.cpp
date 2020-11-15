@@ -7,10 +7,10 @@
 #define Unit int
 #define Matrix Unit **
 
-Matrix InitMatrix(int x, int y)
+Unit2D InitMatrix(int x, int y)
 {
-    Matrix matrix;
-    matrix = (Matrix)malloc(sizeof(Unit *) * y);
+    Unit2D matrix;
+    matrix = (Unit2D)malloc(sizeof(Unit *) * y);
     if (!matrix)
     {
         printf("Allocation error\n");
@@ -29,14 +29,14 @@ Matrix InitMatrix(int x, int y)
     return matrix;
 }
 
-void AddMatrix(Matrix array_destination, Matrix array_source1, Matrix array_source2, int n, int m)
+void AddMatrix(Unit2D array_destination, Unit2D array_source1, Unit2D array_source2, int n, int m)
 {
     for (int y = 0; y < n; y++)
         for (int x = 0; x < m; x++)
             array_destination[y][x] = array_source1[y][x] + array_source2[y][x];
 }
 
-void PrintMatrix(Matrix array_source, int n, int m)
+void PrintMatrix(Unit2D array_source, int n, int m)
 {
     printf("{\n\t");
     for (int y = 0; y < n; y++)
@@ -50,7 +50,7 @@ void PrintMatrix(Matrix array_source, int n, int m)
     printf("\r}\n");
 }
 
-void AssignMatrix(Matrix array_destination, int n, int m)
+void AssignMatrix(Unit2D array_destination, int n, int m)
 {
     printf("Podaj kolejne %d elementow macierzy.\n", n * m);
     for (int y = 0; y < n; y++)
@@ -65,9 +65,9 @@ void AssignMatrix(Matrix array_destination, int n, int m)
 int main(int argc, char *argv[])
 {
     int n = 2, m = 3;
-    Matrix a;
-    Matrix b;
-    Matrix c;
+    Unit2D a;
+    Unit2D b;
+    Unit2D c;
 
     a = InitMatrix(n, m);
     b = InitMatrix(n, m);

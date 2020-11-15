@@ -1,4 +1,5 @@
-# LAB2
+# LAB3
 
-## Exercise6
-### Better Swap
+## Exercise Matrix
+
+Matrix class with standard operations;
