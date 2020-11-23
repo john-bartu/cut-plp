@@ -28,11 +28,11 @@ public:
 
     Unit get(int n, int m);
 
-    Matrix add(Matrix &m2);
+    Matrix add(Matrix m2);
 
-    Matrix subtract(Matrix &m2);
+    Matrix subtract(Matrix m2);
 
-    Matrix multiply(Matrix &m2);
+    Matrix multiply(Matrix m2);
 
     // Matrix operator=(const Matrix &m2);
 
