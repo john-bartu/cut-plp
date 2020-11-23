@@ -42,7 +42,7 @@ Unit Matrix::get(int n, int m) {
     return data[n][m];
 }
 
-Matrix Matrix::add(Matrix m2) {
+Matrix Matrix::add(Matrix &m2) {
     Matrix temp(n, m);
 
     for (int y = 0; y < n; y++)
@@ -52,7 +52,7 @@ Matrix Matrix::add(Matrix m2) {
     return temp;
 }
 
-Matrix Matrix::subtract(Matrix m2) {
+Matrix Matrix::subtract(Matrix &m2) {
     Matrix temp(n, m);
 
     for (int y = 0; y < n; y++)
@@ -62,7 +62,7 @@ Matrix Matrix::subtract(Matrix m2) {
     return temp;
 }
 
-Matrix Matrix::multiply(Matrix m2) {
+Matrix Matrix::multiply(Matrix &m2) {
     Matrix temp(this->n, m2.m);
 
     int i, j, k;
