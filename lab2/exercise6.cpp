@@ -1,9 +1,7 @@
 /// Tittle: Exercise6
-/// Description: Swap adresses of variables
+/// Description: Swap addresses of variables
 
 #include <iostream>
-#include <algorithm>
-#include <iomanip>
 
 template <class T>
 void swap(T **a, T **b)

@@ -2,8 +2,6 @@
 /// Description: SWAP values of variables
 
 #include <iostream>
-#include <algorithm>
-#include <iomanip>
 
 template <class T>
 void swap(T *a, T *b)

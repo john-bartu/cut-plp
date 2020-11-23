@@ -4,7 +4,6 @@
 
 #include "matrix.h"
 
-
 using namespace std;
 
 Matrix::Matrix(int n) {

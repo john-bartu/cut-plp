@@ -11,7 +11,6 @@
 #define Unit int
 #define Unit2D Unit**
 
-
 using namespace std;
 
 class Matrix {

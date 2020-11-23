@@ -6,7 +6,6 @@ using namespace std;
 
 void printLine()
 {
-
     cout << endl;
     for (int i = 0; i < 64; i++)
     {
