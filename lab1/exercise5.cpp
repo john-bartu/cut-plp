@@ -1,11 +1,11 @@
 /// Tittle: Exercise5
 /// Description: Adding matrixes
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #define Unit int
-#define Matrix Unit **
+#define Unit2D Unit **
 
 Unit2D InitMatrix(int x, int y)
 {

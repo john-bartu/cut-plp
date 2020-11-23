@@ -1,7 +1,7 @@
 /// Tittle: Exercise3
 /// Description: Calc BMI
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 int main(int argc, char *argv[])
 {

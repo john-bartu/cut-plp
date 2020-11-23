@@ -1,7 +1,7 @@
 /// Tittle: Exercise4
 /// Description: Check if numbers are familiary - sum of divisons = another number +1
 
-#include <stdio.h>
+#include <cstdio>
 
 int check_divisions(int a)
 {
