@@ -7,11 +7,41 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <windows.h>
 
 #define Unit int
 #define Unit2D Unit**
 
 using namespace std;
+
+struct matrix_error : public exception {
+private:
+    string message = "";
+
+public:
+    matrix_error(string text) {
+        this->message += "[ERROR] Matrix Class\n\t";
+        this->message += text;
+        this->message += "\n";
+    }
+
+    matrix_error(int line, string text) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hConsole, 12);
+        this->message += "[ERROR] Matrix Class\n\t";
+        this->message += "on line: ";
+        this->message += to_string(line);
+        this->message += "\n\t";
+        this->message += text + "\n";
+
+    }
+
+    const char *what() const throw() {
+        return message.c_str();
+    }
+};
+
 
 class Matrix {
 

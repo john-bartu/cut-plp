@@ -3,24 +3,19 @@
 //
 
 #include "matrix.h"
+#include <exception>
 
 using namespace std;
 
 Matrix::Matrix(int n) {
-    this->n = n;
-    this->m = n;
-
-    data = new Unit *[n];
-
-    for (int i = 0; i < n; i++) {
-        data[i] = new Unit[n];
-
-        for (int j = 0; j < n; j++)
-            data[i][j] = 0;
-    }
+    Matrix(n, n);
 }
 
 Matrix::Matrix(int n, int m) {
+    if(n<=0){
+        throw matrix_error(18, "sizes of matrix can't be <= zero");
+    }
+
     this->n = n;
     this->m = m;
 
@@ -159,7 +154,6 @@ void Matrix::store(string filename, string path) {
             for (int x = 0; x < m; x++) {
                 file << data[y][x] << " ";
             }
-
             file << endl;
         }
 
@@ -176,6 +170,10 @@ Matrix::Matrix(string filename, string path) {
         file >> this->n;
         file >> this->m;
 
+        if(n<=0){
+            throw matrix_error(176, "sizes of matrix can't be <= zero");
+        }
+
         data = new Unit *[n];
 
         for (int i = 0; i < n; i++) {
@@ -185,6 +183,6 @@ Matrix::Matrix(string filename, string path) {
         }
         file.close();
     } else {
-        throw runtime_error("Could not open file: " + fullpath + "\n");
+        throw ("Could not open file: " + fullpath + "\n");
     }
 }
