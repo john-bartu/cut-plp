@@ -6,7 +6,7 @@
 #include "HRMS.h"
 
 void HRMS::add(Employee employee, double salary) {
-    if(salary<0){
+    if (salary < 0) {
         throw invalid_argument("Salary of " + employee.getId() + " shall not be less than zero");
     }
 

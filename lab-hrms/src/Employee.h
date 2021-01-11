@@ -24,9 +24,13 @@ public:
              string position);
 
     string getId();
+
     string getName();
+
     string getSurname();
+
     string getPosition();
+
     string getDepartmentId();
 };
 

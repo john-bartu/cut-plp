@@ -12,6 +12,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+
 using namespace std;
 
 class HRMS {
@@ -31,8 +32,6 @@ public:
     void printSalariesSorted();
 
     void printEmployee(string employeeId);
-
-    void printEmployeeDepartment(string employeeId);
 
     bool employeeExists(string employeeId);
 };

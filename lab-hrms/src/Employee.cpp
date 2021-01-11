@@ -8,8 +8,8 @@ Employee::Employee() {
 
 }
 
-Employee::Employee( string id, string name, string surname, string departmentId,
-                   string position)  {
+Employee::Employee(string id, string name, string surname, string departmentId,
+                   string position) {
     this->departmentId = departmentId;
     this->id = id;
     this->name = name;
