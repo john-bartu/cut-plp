@@ -12,7 +12,7 @@ Matrix::Matrix(int n) {
 }
 
 Matrix::Matrix(int n, int m) {
-    if(n<=0){
+    if (n <= 0) {
         throw matrix_error(18, "sizes of matrix can't be <= zero");
     }
 
@@ -75,44 +75,6 @@ Matrix Matrix::multiply(Matrix m2) {
     return temp;
 }
 
-// Matrix Matrix::operator=(const Matrix &m2)
-// {
-//     // if the same size just change data
-//     if (this->n == m2.n && this->m == m2.m)
-//     {
-//         for (int i = 0; i < n; i++)
-//         {
-//             for (int j = 0; j < m; j++)
-//                 data[i][j] = m2.data[i][j];
-//         }
-//     }
-//     // if the size changed realloc memorry
-//     else
-//     {
-//         for (int i = 0; i < n; i++)
-//         {
-//             delete (this->data[i]);
-//         }
-
-//         delete (this->data);
-
-//         this->n = m2.n;
-//         this->m = m2.m;
-
-//         data = new Unit *[n];
-
-//         for (int i = 0; i < n; i++)
-//         {
-//             data[i] = new Unit[m];
-
-//             for (int j = 0; j < m; j++)
-//                 data[i][j] = 0;
-//         }
-//     }
-
-//     return this;
-// }
-
 Matrix Matrix::operator+(const Matrix &m2) {
     return add(m2);
 }
@@ -170,7 +132,7 @@ Matrix::Matrix(string filename, string path) {
         file >> this->n;
         file >> this->m;
 
-        if(n<=0){
+        if (n <= 0) {
             throw matrix_error(176, "sizes of matrix can't be <= zero");
         }
 
@@ -186,3 +148,132 @@ Matrix::Matrix(string filename, string path) {
         throw ("Could not open file: " + fullpath + "\n");
     }
 }
+
+Matrix &Matrix::operator=(const Matrix &m2) {
+    if (this == &m2)
+        return *this;
+
+    this->n = m2.n;
+    this->m = m2.m;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++)
+            this->data[i][j] = m2.data[i][j];
+    }
+
+    return *this;
+}
+
+bool Matrix::operator==(const Matrix &m2) {
+
+    // Check if this is not the same matrix
+    if (this == &m2)
+        return true;
+
+    // Check n size
+    if (this->n != m2.n)
+        return false;
+
+    // Check m size
+    if (this->m != m2.m)
+        return false;
+
+    // Check all values
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (this->data[i][j] != m2.data[i][j])
+                return false;
+
+
+    return true;
+}
+
+
+int loadMatrixData(void *data, int argc, char **argv, char **azColName) {
+    vector<string> *vectorPointer = (vector<string> *) (data);
+    vectorPointer->push_back(argv[1]);
+    vectorPointer->push_back(argv[2]);
+    vectorPointer->push_back(argv[3]);
+    return 0;
+}
+
+void Matrix::store(sqlite3 *db, const string &name) {
+    char *zErrMsg = nullptr;
+    int resultCode;
+
+    stringstream stringStream;
+    stringStream << "INSERT INTO matrices ('matrix_name', 'n', 'm', 'data') ";
+    stringStream << "VALUES ('" << name << "', '" << this->n << "', '" << this->m << "', '";
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            stringStream << data[i][j] << ' ';
+    stringStream << "');";
+
+    const string &sql_str = stringStream.str();
+    const char *sql = sql_str.c_str();
+
+    resultCode = sqlite3_exec(db, sql, nullptr, nullptr, &zErrMsg);
+
+    if (resultCode != SQLITE_OK) {
+        string errorMsg;
+
+        if (!strcmp(zErrMsg, "UNIQUE constraint failed: matrices.matrix_name"))
+            errorMsg = "Matrix with name \"" + name + "\" already exists in database";
+        else
+            errorMsg = "Could not store matrix \"" + name + "\"";
+
+        throw (matrix_error(errorMsg));
+    }
+
+    cout << "Successfully stored matrix \"" << name << '"' << endl;
+
+}
+
+Matrix::Matrix(sqlite3 *database, const string &name) {
+    char *zErrMsg = nullptr;
+    int resultCode;
+    const char *sql;
+    string sql_str;
+    vector<string> matrixData;
+    sql_str = "SELECT * FROM matrices WHERE matrix_name == '" + name + "';";
+
+    sql = sql_str.c_str();
+    resultCode = sqlite3_exec(database, sql, loadMatrixData, &matrixData, &zErrMsg);
+
+
+    if (resultCode != SQLITE_OK) {
+        string errorMsg = "Database: loading matrix \"" + name + "\"" + zErrMsg;
+        throw matrix_error(errorMsg);
+    }
+
+    if (matrixData.empty()) {
+        throw matrix_error("Database: matrix in database not found");
+    }
+
+    cout << "Successfully loaded matrix \"" << name << '"' << endl;
+
+    string nString = matrixData[0];
+    string mString = matrixData[1];
+    stringstream dataSS(matrixData[2]);
+
+    this->n = atoi(nString.c_str());
+    this->m = atoi(mString.c_str());
+
+    this->data = new Unit *[this->n];
+
+    for (int i = 0; i < this->n; i++) {
+        this->data[i] = new Unit[this->m];
+
+        for (int j = 0; j < this->m; j++) {
+
+            string buf;
+            dataSS >> buf;
+
+            this->data[i][j] = atof(buf.c_str());;
+        }
+    }
+}
+
+bool Matrix::operator!=(const Matrix &m2) {
+    return !operator==(m2);
+}
+

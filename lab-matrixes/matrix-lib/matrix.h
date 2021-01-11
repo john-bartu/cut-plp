@@ -9,8 +9,11 @@
 #include <fstream>
 #include <sstream>
 #include <windows.h>
+#include <stdlib.h>
+#include <vector>
+#include "../sqlite-lib/sqlite3.h"
 
-#define Unit int
+#define Unit double
 #define Unit2D Unit**
 
 using namespace std;
@@ -64,8 +67,10 @@ public:
 
     Matrix multiply(Matrix m2);
 
-    // Matrix operator=(const Matrix &m2);
+    Matrix &operator=(const Matrix &m2);
 
+    bool operator==(const Matrix &m2);
+    bool operator!=(const Matrix &m2);
     Matrix operator+(const Matrix &m2);
 
     Matrix operator-(const Matrix &m2);
@@ -81,6 +86,10 @@ public:
     void store(string filename, string path);
 
     Matrix(string filename, string path);
+
+    void store(sqlite3 *db, const string &name);
+
+    Matrix(sqlite3 *database, const string &name);
 };
 
 #endif //LAB3_MATRIX_H

@@ -16,8 +16,7 @@ void printLineError(const char *msg) {
     cout << msg;
 }
 
-
-int main() {
+void matrixTests() {
     try {
         cout << "Czytam macierz m1 z pliku: " << endl;
         Matrix m1 = Matrix("m1.txt", "G:/School/PK ROK 2/JiPP/jipp-labs-pk/lab-matrixes");
@@ -68,6 +67,97 @@ int main() {
     catch (matrix_error &e) {
         printLineError(e.what());
     }
+}
 
+sqlite3 *connect() {
+    sqlite3 *db;
+
+    int resultCode = sqlite3_open("db.sqlite", &db);
+    if (resultCode) {
+        cerr << "Can't open database: " << endl << sqlite3_errmsg(db) << endl;
+        exit(1);
+    } else {
+        cout << "Opened database successfully" << endl;
+    }
+
+    return db;
+}
+
+void createTable(sqlite3 *db) {
+    const char *sql;
+    char **errMsg = nullptr;
+    int resultCode;
+
+    sql = "CREATE TABLE IF NOT EXISTS matrices(\n"
+          "    matrix_name VARCHAR(128) PRIMARY KEY,\n"
+          "    n INTEGER NOT NULL,\n"
+          "    m INTEGER NOT NULL,\n"
+          "    data TEXT NOT NULL\n"
+          ");";
+
+//    sql = "CREATE TABLE matrices2(INTEGER);";
+    resultCode = sqlite3_exec(db, sql, nullptr, nullptr, errMsg);
+
+    if (resultCode != SQLITE_OK) {
+        cerr << "Error creating table:" << endl << errMsg << endl;
+        exit(1);
+    }
+}
+
+void clearTable(sqlite3 *db) {
+    const char *sql;
+    char **errMsg = nullptr;
+    int rc;
+
+    sql = "DELETE FROM matrices";
+    rc = sqlite3_exec(db, sql, nullptr, nullptr, errMsg);
+
+    if (rc != SQLITE_OK) {
+        cerr << "Error clearing table \"matrices\":" << endl << errMsg << endl;
+        exit(1);
+    }
+}
+
+void databaseTest(sqlite3 *db) {
+    try {
+        cout << "Testing SQLITE" << endl;
+
+        Matrix testMatrix(2, 5);
+        testMatrix.set(0, 0, 1);
+        testMatrix.set(0, 1, 2);
+        testMatrix.set(0, 2, 3);
+        testMatrix.set(0, 3, 4);
+        testMatrix.set(0, 4, 5);
+        testMatrix.set(1, 0, 6);
+        testMatrix.set(1, 1, 7);
+        testMatrix.set(1, 2, 8);
+        testMatrix.set(1, 3, 9);
+        testMatrix.set(1, 4, 10);
+
+        testMatrix.print();
+
+        testMatrix.store(db, "testmatrix");
+
+        Matrix downloadedMatrix(db, "testmatrix");
+        downloadedMatrix.print();
+
+
+    }
+    catch (matrix_error &e) {
+        printLineError(e.what());
+    }
+
+}
+
+int main() {
+    sqlite3 *db = connect();
+
+    createTable(db);
+    clearTable(db);
+    databaseTest(db);
+
+    sqlite3_close(db);
+
+    // matrixTests();
     return 0;
 }
