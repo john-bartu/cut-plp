@@ -16,6 +16,18 @@ private:
     string surname;
     string departmentId;
     string position;
+
+public:
+    Employee();
+
+    Employee(string id, string name, string surname, string departmentId,
+             string position);
+
+    string getId();
+    string getName();
+    string getSurname();
+    string getPosition();
+    string getDepartmentId();
 };
 
 
