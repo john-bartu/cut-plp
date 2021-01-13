@@ -65,7 +65,7 @@ int main() {
         cout << "\tERR: " << e.what() << endl;
     }
 
-    cout << "Changing salary of employee whichone not exist..." << endl;
+    cout << "Changing salary of employee which not exist..." << endl;
     try {
         system.changeSalary("1000", 5000);
     } catch (invalid_argument &e) {
