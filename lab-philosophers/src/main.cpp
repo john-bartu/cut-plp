@@ -1,21 +1,11 @@
-//
-// Created by bartu on 1/26/2021.
-//
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <memory.h>
-#include <stdbool.h>
-#include <semaphore.h>
+#include <cstdio>
+#include <cstdlib>
 #include <unistd.h>
-#include <stdint.h>
-#include <time.h>
 #include <thread>
 #include <mutex>
 #include <map>
 #include <atomic>
 #include <iostream>
-#include <random>
 #include <chrono>
 #include <condition_variable>
 #include <iomanip>
@@ -23,11 +13,8 @@
 using namespace std;
 
 #define NO_PHILOSOPHERS 5
-bool DEBUG = 0;
 
-sem_t WAITER;
-sem_t CHOPSTICKS[NO_PHILOSOPHERS];
-
+bool DEBUG = false;
 
 mutex forks[NO_PHILOSOPHERS];
 
@@ -37,19 +24,7 @@ mutex tableLock;
 mutex printLock;
 condition_variable cv;
 
-bool chairAvaible() { return tableCount > 0; }
-
-int leftFork(int i) {
-    return i;
-}
-
-int rightFork(int i) {
-    return (i + 1) % NO_PHILOSOPHERS;
-}
-
-int randomSleep() {
-    return usleep(rand() % 1000);
-}
+bool chairAvailable() { return tableCount > 0; }
 
 class Philosopher {
 private:
@@ -72,14 +47,9 @@ public:
 
     Philosopher(int id, string name) : id(id), name(name) {}
 
-    void randomSleep() {
+    static void randomSleep() {
         std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 500));
     }
-
-    void secondsSleep(int seconds) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(seconds * 1000));
-    }
-
 
     void operator()() {
 
@@ -93,7 +63,7 @@ public:
             {
                 unique_lock<mutex> tempLock(tableLock);
                 auto sec = chrono::seconds(2);
-                if (!cv.wait_for(tempLock, 2 * sec, chairAvaible)) {
+                if (!cv.wait_for(tempLock, 2 * sec, chairAvailable)) {
                     cout << setw(20) << name << " id: " << id << ", starved to death" << endl;
                     break;
                 }
@@ -162,15 +132,16 @@ int main(int argc, char *argv[]) {
         cout << "Create philosophers..." << endl;
     }
     Philosopher philosophers[NO_PHILOSOPHERS] = {{0, "Tales 👩"},
-                                                 {1, "Pitagoras 🧓"},
-                                                 {2, "Heraklit 🤶"},
+                                                 {1, "Pythagoras 🧓"},
+                                                 {2, "Heraclitus 🤶"},
                                                  {3, "Platon 👳"},
-                                                 {4, "Arystoteles 👵"}};
+                                                 {4, "Aristotle's 👵"}};
 
     {
         const lock_guard<mutex> lock(printLock);
         cout << "Create threads... " << endl;;
     }
+
     thread threads[NO_PHILOSOPHERS];
     for (int i = 0; i < NO_PHILOSOPHERS; i++) {
         threads[i] = thread(philosophers[i]);
