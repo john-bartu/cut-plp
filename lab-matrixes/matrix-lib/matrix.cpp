@@ -12,8 +12,8 @@ Matrix::Matrix(int n) {
 }
 
 Matrix::Matrix(int n, int m) {
-    if (n <= 0) {
-        throw matrix_error(18, "sizes of matrix can't be <= zero");
+    if (n <= 0 || m <= 0) {
+        throw matrix_error(18, "dimension of matrix can't be <= zero");
     }
 
     this->n = n;
@@ -30,14 +30,30 @@ Matrix::Matrix(int n, int m) {
 }
 
 void Matrix::set(int n, int m, Unit value) {
+    if (n >= this->n || n < 0) {
+        throw matrix_error("This matrix n size not acquired");
+    }
+    if (m >= this->m || m < 0) {
+        throw matrix_error("This matrix m size not acquired");
+    }
     data[n][m] = value;
 }
 
 Unit Matrix::get(int n, int m) {
+    if (n >= this->n || n < 0) {
+        throw matrix_error("This matrix n size not acquired");
+    }
+    if (m >= this->m || m < 0) {
+        throw matrix_error("This matrix m size not acquired");
+    }
     return data[n][m];
 }
 
 Matrix Matrix::add(Matrix m2) {
+    if (this->n != m2.rows() || this->m != m2.cols())
+        throw matrix_error("Size mismatch on addition");
+
+
     Matrix temp(n, m);
 
     for (int y = 0; y < n; y++)
@@ -48,6 +64,9 @@ Matrix Matrix::add(Matrix m2) {
 }
 
 Matrix Matrix::subtract(Matrix m2) {
+    if (this->n != m2.rows() || this->m != m2.cols())
+        throw matrix_error("Size mismatch on subtract");
+
     Matrix temp(n, m);
 
     for (int y = 0; y < n; y++)
@@ -58,6 +77,9 @@ Matrix Matrix::subtract(Matrix m2) {
 }
 
 Matrix Matrix::multiply(Matrix m2) {
+    if (this->m != m2.cols())
+        throw matrix_error("Size mismatch on multiply");
+
     Matrix temp(this->n, m2.m);
 
     int i, j, k;
@@ -66,6 +88,7 @@ Matrix Matrix::multiply(Matrix m2) {
     for (i = 0; i < this->n; i++)
         for (j = 0; j < m2.m; j++) {
             sum = 0;
+
             for (k = 0; k < m2.n; k++)
                 sum += this->data[i][k] * m2.data[k][j];
 
@@ -133,7 +156,7 @@ Matrix::Matrix(string filename, string path) {
         file >> this->m;
 
         if (n <= 0) {
-            throw matrix_error(176, "sizes of matrix can't be <= zero");
+            throw matrix_error("sizes of matrix can't be <= zero");
         }
 
         data = new Unit *[n];
@@ -145,7 +168,7 @@ Matrix::Matrix(string filename, string path) {
         }
         file.close();
     } else {
-        throw ("Could not open file: " + fullpath + "\n");
+        throw runtime_error("Could not open matrix file: " + fullpath + "\n");
     }
 }
 
@@ -277,10 +300,10 @@ bool Matrix::operator!=(const Matrix &m2) {
     return !operator==(m2);
 }
 
-ostream& operator<<(ostream &out, Matrix m) {
+ostream &operator<<(ostream &out, Matrix m) {
 
     out << "----- MATRIX -----" << endl;
-    out << "ROW: " << setw(3)  << m.cols()  << " " << "COL: " << setw(3) << m.rows() << endl;
+    out << "ROW: " << setw(3) << m.cols() << " " << "COL: " << setw(3) << m.rows() << endl;
     for (int i = 0; i < m.cols(); i++) {
         for (int j = 0; j < m.rows(); j++)
             out << setw(3) << m.get(i, j) << ' ';
