@@ -6,7 +6,7 @@ using namespace std;
 
 void printLine() {
     cout << endl;
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < 48; i++) {
         cout << "#";
     }
     cout << endl;
@@ -23,6 +23,8 @@ void matrixTests() {
         m1.print();
 
         printLine();
+
+        cout << "Wykonuje: cout << m1:" << endl;
 
         cout << m1;
 
@@ -61,6 +63,14 @@ void matrixTests() {
         temp = m1 * m2;
         temp.print();
 
+        printLine();
+
+        cout << "Wykonuje: m1 * m2 == m1:" << endl;
+        cout <<(m1*m2 == m1);
+        printLine();
+
+        cout << "Wykonuje: m1 == m1:" << endl;
+        cout <<(m1 == m1);
         printLine();
 
         cout << "Zapisuje m1 * m2 do pliki m3.txt" << endl;
@@ -156,14 +166,24 @@ void databaseTest(sqlite3 *db) {
 }
 
 int main() {
+
+    // join DB
     sqlite3 *db = connect();
 
+    // create table in DB
     createTable(db);
+
+    // clear table if something left
     clearTable(db);
+
+    // test some DB operations
     databaseTest(db);
+
+    //close connection
 
     sqlite3_close(db);
 
+    // test some matrices operations
     matrixTests();
     return 0;
 }
