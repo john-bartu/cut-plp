@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
-#include <unistd.h>
+#include <cstring>
 #include <thread>
 #include <mutex>
 #include <map>
@@ -131,6 +131,7 @@ int main(int argc, char *argv[]) {
         const lock_guard<mutex> lock(printLock);
         cout << "Create philosophers..." << endl;
     }
+
     Philosopher philosophers[NO_PHILOSOPHERS] = {{0, "Tales 👩"},
                                                  {1, "Pythagoras 🧓"},
                                                  {2, "Heraclitus 🤶"},
