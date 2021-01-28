@@ -6,6 +6,7 @@
 #define LAB3_MATRIX_H
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <windows.h>
@@ -70,12 +71,16 @@ public:
     Matrix &operator=(const Matrix &m2);
 
     bool operator==(const Matrix &m2);
+
     bool operator!=(const Matrix &m2);
+
     Matrix operator+(const Matrix &m2);
 
     Matrix operator-(const Matrix &m2);
 
     Matrix operator*(const Matrix &m2);
+
+    friend ostream& operator<<(ostream &out, Matrix m);
 
     int cols();
 

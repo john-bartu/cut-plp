@@ -277,3 +277,17 @@ bool Matrix::operator!=(const Matrix &m2) {
     return !operator==(m2);
 }
 
+ostream& operator<<(ostream &out, Matrix m) {
+
+    out << "----- MATRIX -----" << endl;
+    out << "ROW: " << setw(3)  << m.cols()  << " " << "COL: " << setw(3) << m.rows() << endl;
+    for (int i = 0; i < m.cols(); i++) {
+        for (int j = 0; j < m.rows(); j++)
+            out << setw(3) << m.get(i, j) << ' ';
+        out << endl;
+    }
+    out << "------------------" << endl;
+    return out;
+
+}
+

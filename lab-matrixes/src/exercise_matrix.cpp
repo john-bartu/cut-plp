@@ -24,6 +24,10 @@ void matrixTests() {
 
         printLine();
 
+        cout << m1;
+
+        printLine();
+
         cout << "Czytam macierz m2 z pliku: " << endl;
         Matrix m2 = Matrix("m2.txt", "G:/School/PK ROK 2/JiPP/jipp-labs-pk/lab-matrixes");
         m2.print();
@@ -63,6 +67,8 @@ void matrixTests() {
         temp.store("m3.txt", ".");
 
         cout << "-- Koniec Demonstracji  --" << endl << endl;
+
+
     }
     catch (matrix_error &e) {
         printLineError(e.what());
@@ -158,6 +164,6 @@ int main() {
 
     sqlite3_close(db);
 
-    // matrixTests();
+    matrixTests();
     return 0;
 }
